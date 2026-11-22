@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10131d">
+<title>Teyvat Control — Genshin Kontrol Paneli</title>
+<style>
+:root{--bg:#0d1018;--panel:#151a27;--panel2:#1b2232;--line:#293247;--text:#f2f4fb;--muted:#9ca8bd;--gold:#e8c77a;--blue:#8fb8ff;--green:#83d6ad;--red:#ff9b9b}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 75% -10%,#29344c 0,transparent 45%),var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+button,input{font:inherit}button{cursor:pointer}.shell{max-width:1180px;margin:auto;padding:22px}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}.brand{display:flex;align-items:center;gap:12px}.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#f2d994,#a77d40);display:grid;place-items:center;color:#1a1b22;font-size:22px;font-weight:900}.brand h1{font-size:18px;margin:0}.brand p{margin:2px 0 0;color:var(--muted);font-size:12px}.uidbox{display:flex;gap:8px;align-items:center;background:var(--panel);border:1px solid var(--line);padding:7px 10px;border-radius:12px}.uidbox input{width:112px;background:transparent;border:0;color:var(--text);outline:0}.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:9px 13px;border-radius:10px}.btn.primary{background:var(--gold);color:#211d14;border-color:var(--gold);font-weight:700}.btn.small{padding:6px 10px;font-size:12px}
+.hero{border:1px solid #39445b;border-radius:20px;padding:24px;background:linear-gradient(110deg,#202b42,#151a28 65%);display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:18px}.eyebrow{color:var(--gold);font-size:11px;letter-spacing:2px;text-transform:uppercase}.hero h2{font-size:clamp(24px,4vw,34px);margin:5px 0}.hero p{color:var(--muted);margin:0;max-width:620px}.hero-stat{text-align:right;min-width:120px}.hero-stat strong{display:block;font-size:28px;color:var(--gold)}.hero-stat span{font-size:12px;color:var(--muted)}
+.tabs{display:flex;gap:7px;overflow:auto;padding:4px 0 14px}.tab{white-space:nowrap;background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:10px;padding:9px 13px}.tab.active{background:#2a3348;color:var(--gold);border-color:#66708a}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}.metric label{display:block;color:var(--muted);font-size:12px}.metric strong{font-size:25px;display:block;margin-top:5px}.metric small{color:var(--muted)}.section-head{display:flex;justify-content:space-between;align-items:center;margin:22px 0 12px}.section-head h3{margin:0;font-size:17px}.muted{color:var(--muted)}.notice{border:1px solid #655638;background:#302919;color:#e9d5a6;border-radius:12px;padding:12px 14px;font-size:13px;margin:14px 0}
+.character-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.character{min-height:150px;position:relative;overflow:hidden;background:linear-gradient(145deg,#27344a,#171d2a);border:1px solid #3b4961;border-radius:15px;padding:14px}.character .element{font-size:11px;color:var(--gold);letter-spacing:1px}.character h4{font-size:16px;margin:14px 0 2px}.character p{font-size:12px;color:var(--muted);margin:0}.character .level{position:absolute;right:12px;top:12px;color:var(--blue);font-size:12px}
+.formrow{display:flex;gap:8px;flex-wrap:wrap}.formrow input{background:#0f1420;color:var(--text);border:1px solid var(--line);border-radius:9px;padding:9px;min-width:0}.formrow input[type=number]{width:105px}.formrow input[type=text]{flex:1;min-width:130px}
+.list{display:grid;gap:8px}.item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;background:#111724;border:1px solid var(--line);border-radius:11px}.item strong{display:block}.item small{color:var(--muted)}
+.progress{height:8px;background:#30384a;border-radius:20px;overflow:hidden;margin-top:8px}.progress i{display:block;height:100%;background:linear-gradient(90deg,#caa65b,#f0d58e);width:0}
+.hidden{display:none!important}.empty{padding:28px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px}
+footer{padding:24px 0;color:#748097;font-size:12px;text-align:center}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.character-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.shell{padding:15px}.hero{align-items:flex-start}.hero-stat{min-width:80px}.uidbox{width:100%;justify-content:space-between}header{align-items:flex-start;flex-direction:column}.uidbox input{flex:1}.grid{gap:8px}.card{padding:12px}.metric strong{font-size:21px}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header>
+ <div class="brand"><div class="logo">✦</div><div><h1>TEYVAT CONTROL</h1><p>GENSHIN IMPACT · HESAP MERKEZİ</p></div></div>
+ <div class="uidbox"><span class="muted">UID</span><input id="uid" value="753934980" maxlength="10" inputmode="numeric"><button class="btn small" id="saveUid">Kaydet</button></div>
+</header>
+<section class="hero">
+ <div><div class="eyebrow">Traveler's dossier</div><h2>Mac eranın kontrolü sende.</h2><p>Karakterlerini, çekiliş hedeflerini ve oyun içi kaynaklarını tek panelden takip et. Verilerin bu cihazda saklanır.</p></div>
+ <div class="hero-stat"><strong id="wishTotal">0</strong><span>Toplam dilek kaydı</span></div>
+</section>
+<nav class="tabs">
+ <button class="tab active" data-tab="overview">Genel Bakış</button>
+ <button class="tab" data-tab="characters">Karakterler</button>
+ <button class="tab" data-tab="wishes">Dilek Takibi</button>
+ <button class="tab" data-tab="resources">Kaynak Planı</button>
+</nav>
+<main>
+<section id="overview">
+ <div class="grid">
+  <div class="card metric"><label>Karakter sayısı</label><strong id="charCount">0</strong><small>Eklediğin karakterler</small></div>
+  <div class="card metric"><label>Toplam dilek</label><strong id="wishMetric">0</strong><small>Takip ettiğin çekilişler</small></div>
+  <div class="card metric"><label>Primogem</label><strong id="primogemMetric">0</strong><small>Manuel kaynak kaydı</small></div>
+  <div class="card metric"><label>Acquaint Fate</label><strong id="fateMetric">0</strong><small>Standart dilek</small></div>
+ </div>
+ <div class="notice">UID ile Enka profil içe aktarımı bu ilk sürümde henüz etkin değil. Enka herkese açık karakter vitrini verilerini sağlayabilir; gizli envanter, primogem ve dilek geçmişi UID üzerinden alınamaz. Bunları şimdilik elle kaydedebilirsin.</div>
+ <div class="section-head"><h3>Son eklenen karakterler</h3><button class="btn small" data-go="characters">Karakterlere git →</button></div>
+ <div id="recentChars" class="character-grid"></div>
+</section>
+<section id="characters" class="hidden">
+ <div class="section-head"><h3>Karakter koleksiyonun</h3><span class="muted" id="characterCountLabel">0 kayıt</span></div>
+ <div class="card">
+  <div class="formrow"><input id="charName" type="text" placeholder="Karakter adı (örn. Furina)"><input id="charElement" type="text" placeholder="Element"><input id="charLevel" type="number" min="1" max="已" placeholder="Seviye"><button class="btn primary" id="addChar">Karakter ekle</button></div>
+ </div>
+ <div class="section-head"><h3>Kayıtlı karakterler</h3></div><div id="characterList" class="character-grid"></div>
+</section>
+<section id="wishes" class="hidden">
+ <div class="section-head"><h3>Dilek / pity takibi</h3><span class="muted">Manuel kayıt</span></div>
+ <div class="grid">
+  <div class="card metric"><label>Toplam dilek</label><strong id="wishTotal2">0</strong></div>
+  <div class="card metric"><label>Karakter etkinlik</label><strong id="limitedWishes">0</strong></div>
+  <div class="card metric"><label>Silah etkinlik</label><strong id="weaponWishes">0</strong></div>
+  <div class="card metric"><label>Standart</label><strong id="standardWishes">0</strong></div>
+ </div>
+ <div class="card" style="margin-top:12px"><div class="formrow"><input id="wishType" type="text" placeholder="Tür: Karakter / Silah / Standart"><input id="wishCount" type="number" min="1" placeholder="Dilek sayısı"><button class="btn primary" id="addWish">Kayıt ekle</button></div></div>
+ <div class="section-head"><h3>Çekiliş kayıtların</h3></div><div id="wishList" class="list"></div>
+</section>
+<section id="resources" class="hidden">
+ <div class="section-head"><h3>Kaynak planı</h3><span class="muted">Cihazında saklanır</span></div>
+ <div class="grid">
+  <div class="card metric"><label>Primogem</label><strong id="primogemTotal">0</strong></div>
+  <div class="card metric"><label>Intertwined Fate</label><strong id="intertwinedTotal">0</strong></div>
+  <div class="card metric"><label>Acquaint Fate</label><strong id="acquaintTotal">0</strong></div>
+  <div class="card metric"><label>Toplam dilek karşılığı</label><strong id="wishEquivalent">0</strong></div>
+ </div>
+ <div class="card" style="margin-top:12px"><div class="formrow"><input id="primogems" type="number" min="0" placeholder="Primogem"><input id="intertwined" type="number" min="0" placeholder="Intertwined Fate"><input id="acquaint" type="number" min="0" placeholder="Acquaint Fate"><button class="btn primary" id="saveResources">Kaynakları kaydet</button></div><p class="muted" style="font-size:12px;margin-bottom:0">1 dilek = 160 Primogem. Sayılar senin girdiğin değerlere göre hesaplanır.</p></div>
+ <div class="section-head"><h3>Hedef hesaplayıcı</h3></div>
+ <div class="card"><div class="formrow"><input id="targetWishes" type="number" min="0" placeholder="Hedef dilek sayısı"><button class="btn" id="calcTarget">Hesapla</button></div><p id="targetResult" class="muted"></p></div>
+</section>
+</main>
+<footer>TEYVAT CONTROL · İlk sürüm 0.1 · Veriler yalnızca bu tarayıcıda saklanır.</footer>
+</div>
+<script>
+const KEY='teyvat-control-v1';
+const blank={uid:'753934980',characters:[],wishes:[],resources:{primogems:0,intertwined:0,acquaint:0}};
+let state;try{state={...blank,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{state=structuredClone(blank)}
+const $=id=>document.getElementById(id);
+const save=()=>{localStorage.setItem(KEY,JSON.stringify(state));render()};
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function card(c){return `<article class="character"><span class="element">${esc(c.element||'ELEMENT BELİRTİLMEDİ')}</span><span class="level">Lv. ${c.level||1}</span><h4>${esc(c.name)}</h4><p>Gezgin koleksiyonu</p></article>`}
+function render(){
+ $('uid').value=state.uid;
+ const total=state.wishes.reduce((a,w)=>a+w.count,0),r=state.resources;
+ $('wishTotal').textContent=total;$('wishMetric').textContent=total;$('wishTotal2').textContent=total;
+ $('charCount').textContent=state.characters.length;$('characterCountLabel').textContent=state.characters.length+' kayıt';
+ $('primogemMetric').textContent=r.primogems;$('fateMetric').textContent=r.acquaint;
+ $('primogemTotal').textContent=r.primogems;$('intertwinedTotal').textContent=r.intertwined;$('acquaintTotal').textContent=r.acquaint;
+ $('wishEquivalent').textContent=Math.floor(r.primogems/160)+r.intertwined+r.acquaint;
+ $('limitedWishes').textContent=state.wishes.filter(w=>w.type.toLowerCase().includes('karakter')).reduce((a,w)=>a+w.count,0);
+ $('weaponWishes').textContent=state.wishes.filter(w=>w.type.toLowerCase().includes('silah')).reduce((a,w)=>a+w.count,0);
+ $('standardWishes').textContent=state.wishes.filter(w=>w.type.toLowerCase().includes('standart')).reduce((a,w)=>a+w.count,0);
+ $('characterList').innerHTML=state.characters.length?state.characters.map((c,i)=>card(c)+`<button class="btn small" style="margin-top:6px" onclick="removeChar(${i})">Sil</button>`).join(''):'<div class="empty">Henüz karakter eklemedin.</div>';
+ $('recentChars').innerHTML=state.characters.length?state.characters.slice(-4).reverse().map(card).join(''):'<div class="empty" style="grid-column:1/-1">İlk karakterini ekleyerek koleksiyonunu oluşturmaya başla.</div>';
+ $('wishList').innerHTML=state.wishes.length?state.wishes.map((w,i)=>`<div class="item"><div><strong>${esc(w.type)}</strong><small>${new Date(w.date).toLocaleDateString('tr-TR')}</small></div><strong>${w.count} dilek <button class="btn small" onclick="removeWish(${i})">Sil</button></strong></div>`).join(''):'<div class="empty">Henüz dilek kaydı yok.</div>';
+}
+window.removeChar=i=>{state.characters.splice(i,1);save()};window.removeWish=i=>{state.wishes.splice(i,1);save()};
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
+document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.go)));
+function showTab(id){document.querySelectorAll('main section').forEach(s=>s.classList.toggle('hidden',s.id!==id));document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===id))}
+$('saveUid').onclick=()=>{state.uid=$('uid').value.replace(/\D/g,'').slice(0,10);save()};
+$('addChar').onclick=()=>{let name=$('charName').value.trim();if(!name)return;state.characters.push({name,element:$('charElement').value.trim(),level:Math.max(1,Math.min(90,Number($('charLevel').value)||1))});$('charName').value='';$('charElement').value='';$('charLevel').value='';save()};
+$('addWish').onclick=()=>{let type=$('wishType').value.trim(),count=Number($('wishCount').value);if(!type||!Number.isFinite(count)||count<1)return;state.wishes.push({type,count:Math.floor(count),date:new Date().toISOString()});$('wishCount').value='';save()};
+$('saveResources').onclick=()=>{state.resources={primogems:Math.max(0,Number($('primogems').value)||0),intertwined:Math.max(0,Number($('intertwined').value)||0),acquaint:Math.max(0,Number($('acquaint').value)||0)};save()};
+$('calcTarget').onclick=()=>{let n=Math.max(0,Number($('targetWishes').value)||0),have=Math.floor(state.resources.primogems/160)+state.resources.intertwined;let missing=Math.max(0,n-have);$('targetResult').textContent=`Hedefe ulaşmak için ${missing} dilek daha gerekiyor (yaklaşık ${missing*160} Primogem).`};
+render();
+</script>
+</body></html>
